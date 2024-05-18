@@ -20,11 +20,20 @@
       perSystem =
         { pkgs, system, ... }:
         let
+          utils = import ./utils.nix pkgs;
+          base = import ./config/base.nix;
+
           nixvimLib = nixvim.lib.${system};
           nixvim' = nixvim.legacyPackages.${system};
           nixvimModule = {
             inherit pkgs;
-            module = import ./config; # import the module directly
+            module = { pkgs, lib, ... }@moduleInputs:
+              utils.parsePlugins (utils.mergeAttrSets
+                (map
+                  (path: (import path) moduleInputs)
+                  (utils.file_paths_in_dir ./config)
+                )
+              );
             # You can use `extraSpecialArgs` to pass additional arguments to your module files
             extraSpecialArgs = {
               # inherit (inputs) foo;
