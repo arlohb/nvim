@@ -21,7 +21,6 @@
         { pkgs, system, ... }:
         let
           utils = import ./utils.nix pkgs;
-          base = import ./config/base.nix;
 
           nixvimLib = nixvim.lib.${system};
           nixvim' = nixvim.legacyPackages.${system};
@@ -30,27 +29,16 @@
             module = { pkgs, lib, ... }@moduleInputs:
               utils.parsePlugins (utils.mergeAttrSets
                 (map
-                  (path: (import path) moduleInputs)
+                  import
                   (utils.file_paths_in_dir ./config)
                 )
               );
-            # You can use `extraSpecialArgs` to pass additional arguments to your module files
-            extraSpecialArgs = {
-              # inherit (inputs) foo;
-            };
           };
           nvim = nixvim'.makeNixvimWithModule nixvimModule;
         in
         {
-          checks = {
-            # Run `nix flake check .` to verify that your config is not broken
-            default = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
-          };
-
-          packages = {
-            # Lets you run `nix run .` to start nixvim
-            default = nvim;
-          };
+          checks.default = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
+          packages.default = nvim;
         };
     };
 }

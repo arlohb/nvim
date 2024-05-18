@@ -1,5 +1,4 @@
-{ pkgs, lib, ... }:
-with pkgs.vimPlugins; {
+{
   nvim-tree-lua = ''
     require("nvim-tree").setup {
       diagnostics = {
