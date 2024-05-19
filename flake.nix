@@ -22,17 +22,24 @@
         let
           utils = import ./utils.nix pkgs;
 
+          paths = utils.file_paths_in_dir ./config;
+          modules = (builtins.filter
+            (pkgs.lib.strings.hasSuffix ".nix")
+            paths
+          );
+          mergedModule = (utils.mergeAttrSets
+            (map
+              import
+              modules
+            )
+          );
+
           nixvimLib = nixvim.lib.${system};
           nixvim' = nixvim.legacyPackages.${system};
           nixvimModule = {
             inherit pkgs;
             module = { pkgs, lib, ... }@moduleInputs:
-              utils.parsePlugins (utils.mergeAttrSets
-                (map
-                  import
-                  (utils.file_paths_in_dir ./config)
-                )
-              );
+              utils.parsePlugins mergedModule;
           };
           nvim = nixvim'.makeNixvimWithModule nixvimModule;
         in

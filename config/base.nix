@@ -1,13 +1,44 @@
 {
-  nvim-tree-lua = ''
-    require("nvim-tree").setup {
-      diagnostics = {
-        enable = true,
-        show_on_dirs = true,
+  none = builtins.readFile ./base.lua;
+
+  # Required by loads of plugins
+  plenary-nvim = "";
+  nvim-web-devicons = "";
+
+  # A terminal that can be floating or as a side pane
+  toggleterm-nvim = ''
+    require("toggleterm").setup({
+      autochdir = true,
+      shade_terminals = false,
+      float_opts = {
+        border = "curved",
+        winblend = 0,
       },
-      renderer = {
-        group_empty = true,
-      },
-    }
+    })
+  '';
+
+  # Integrates with direnv
+  direnv-vim = ''
+    -- This is my own variable not direnv's
+    -- I want to ignore the first time (when nvim starts),
+    -- and only notify the second time.
+    vim.g.direnv_already_notified = -1
+
+    vim.g.direnv_silent_load = 1
+
+    vim.api.nvim_create_autocmd(
+      "User",
+      {
+        pattern = "DirenvLoaded",
+        callback = function(_e)
+          if vim.g.direnv_already_notified == 0 then
+            vim.notify("Direnv loaded")
+          end
+
+          -- Lua doesn't have ++ or += 😞
+          vim.g.direnv_already_notified = vim.g.direnv_already_notified + 1
+        end,
+      }
+    )
   '';
 }

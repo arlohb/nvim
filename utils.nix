@@ -5,7 +5,9 @@ in
 rec {
   parsePlugins = lib.attrsets.foldlAttrs
     (result: name: value:
-      {
+      if name == "nixvim"
+      then (result // value)
+      else {
         extraPlugins = result.extraPlugins
         ++ (if name != "none"
           then [
