@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   none = builtins.readFile ./base.lua;
 

@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   # Magit clone
   neogit = ''

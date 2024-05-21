@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   # A fuzzy finder with many uses
   telescope-nvim = ''

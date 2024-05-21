@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   # The file tree
   nvim-tree-lua = ''

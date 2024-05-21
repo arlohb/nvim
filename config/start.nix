@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   alpha-nvim = "
     require('alpha').setup {

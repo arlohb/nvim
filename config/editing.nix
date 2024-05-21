@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   # Better word movements
   nvim-spider = ''

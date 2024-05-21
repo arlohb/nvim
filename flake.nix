@@ -29,7 +29,7 @@
           );
           mergedModule = (utils.mergeAttrSets
             (map
-              import
+              (path: (import path) { inherit pkgs; })
               modules
             )
           );

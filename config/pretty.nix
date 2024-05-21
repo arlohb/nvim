@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   # The theme(s)
   sonokai = ''

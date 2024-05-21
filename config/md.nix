@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   # TODO: Maybe in the future
   # - https://github.com/jakewvincent/mkdnflow.nvim
