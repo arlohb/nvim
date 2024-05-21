@@ -1,5 +1,12 @@
 { pkgs, ... }:
 {
+  nixvim = {
+    extraPackages = with pkgs; [
+      ripgrep
+      fd
+    ];
+  };
+
   # A fuzzy finder with many uses
   telescope-nvim = ''
     require("telescope").setup {
