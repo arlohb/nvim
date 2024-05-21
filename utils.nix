@@ -7,7 +7,7 @@ rec {
     (result: name: value:
       if name == "nixvim"
       then (result // value)
-      else {
+      else result // {
         extraPlugins = result.extraPlugins
         ++ (if name != "none"
           then [
