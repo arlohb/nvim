@@ -24,7 +24,7 @@
 
           modulePaths = (builtins.filter
             (pkgs.lib.strings.hasSuffix ".nix")
-            utils.file_paths_in_dir ./config
+            (utils.file_paths_in_dir ./config)
           );
           modules = map
             (path: (import path) { inherit pkgs; })
