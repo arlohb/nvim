@@ -22,29 +22,23 @@
         let
           utils = import ./utils.nix pkgs;
 
-          paths = utils.file_paths_in_dir ./config;
-          modules = (builtins.filter
+          modulePaths = (builtins.filter
             (pkgs.lib.strings.hasSuffix ".nix")
-            paths
+            utils.file_paths_in_dir ./config
           );
-          mergedModule = (utils.mergeAttrSets
-            (map
-              (path: (import path) { inherit pkgs; })
-              modules
-            )
-          );
+          modules = map
+            (path: (import path) { inherit pkgs; })
+            modulePaths;
 
           nixvimLib = nixvim.lib.${system};
           nixvim' = nixvim.legacyPackages.${system};
-          nixvimModule = {
-            inherit pkgs;
-            module = { pkgs, lib, ... }@moduleInputs:
-              utils.parsePlugins mergedModule;
-          };
-          nvim = nixvim'.makeNixvimWithModule nixvimModule;
+          nvim = utils.makeNixvimFromPlugins nixvim' modules;
         in
         {
-          checks.default = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
+          checks.default = nixvimLib.check.mkTestDerivationFromNvim {
+            inherit nvim;
+            name = "nixvim-check";
+          };
           packages.default = nvim;
         };
     };

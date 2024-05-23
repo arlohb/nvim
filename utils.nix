@@ -3,6 +3,29 @@ let
   lib = pkgs.lib;
 in
 rec {
+  # Go from my nicer plugin syntax to a nixvim module
+  #
+  # For example:
+  # {
+  #   # Parse this as a nixvim module
+  #   nixvim = {
+  #     plugins.treesitter.enable = true;
+  #   };
+  #
+  #   # Lua config not directly linked to a plugin
+  #   none = ''
+  #     vim.opt.encoding = "utf8";
+  #   '';
+  #
+  #   # Install a plugin with no config
+  #   plenary-nvim = "";
+  #
+  #   # Install a plugin with lua config
+  #   telescope-nvim = ''
+  #     require("telescope").setup {}
+  #   '';
+  # }
+  # 
   parsePlugins = lib.attrsets.foldlAttrs
     (result: name: value:
       if name == "nixvim"
@@ -19,9 +42,13 @@ rec {
     )
     { extraPlugins = []; extraConfigLua = ""; };
 
-  mergeAttrSets = lib.lists.foldl
-    (result: set: result // set)
-    {};
+  # Make the nixvim instance with a list of modules in plugin syntax
+  makeNixvimFromPlugins = nixvim: lib.lists.foldl
+    (result: module: result.nixvimExtend (parsePlugins module))
+    (nixvim.makeNixvimWithModule {
+      inherit pkgs;
+      module = {};
+    });
 
   # Get the folders inside a directory
   folders_in_dir = dir:
