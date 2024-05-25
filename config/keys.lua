@@ -96,11 +96,11 @@ require("which-key").register({
 
     d = {
         name = "+debug",
-        -- c = { require("dap").continue, "Continue" },
-        -- l = { require("dap").step_over, "Step over" },
-        -- j = { require("dap").step_into, "Step into" },
-        -- k = { require("dap").step_out, "Step out" },
-        -- b = { require("dap").toggle_breakpoint, "Toggle Breakpoint" },
+        c = { require("dap").continue, "Continue" },
+        l = { require("dap").step_over, "Step over" },
+        j = { require("dap").step_into, "Step into" },
+        k = { require("dap").step_out, "Step out" },
+        b = { require("dap").toggle_breakpoint, "Toggle Breakpoint" },
         r = { "<cmd>RustRunnables<cr>", "Runnables" },
         d = { "<cmd>RustDebuggables<cr>", "Debuggables" },
     },
@@ -169,7 +169,7 @@ require("which-key").register({
         },
     },
 
-    -- [";"] = { require("notify").dismiss, "Dismiss notifications" },
+    [";"] = { require("notify").dismiss, "Dismiss notifications" },
 
 },
 -- Moving between windows

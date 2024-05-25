@@ -1,0 +1,4 @@
+{ pkgs, ... }:
+{
+  pylsp.enable = true;
+}

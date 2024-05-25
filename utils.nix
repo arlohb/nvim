@@ -50,6 +50,11 @@ rec {
       module = {};
     });
 
+  # Merge a list of attrsets, doesn't do any clever recursive merging
+  mergeAttrSets = lib.lists.foldl
+    (result: set: result // set)
+    {};
+
   # Get the folders inside a directory
   folders_in_dir = dir:
     lib.attrsets.mapAttrsToList

@@ -18,16 +18,19 @@
       ];
 
       perSystem =
-        { pkgs, system, ... }:
+        { pkgs, lib, system, ... }:
         let
           utils = import ./utils.nix pkgs;
 
           modulePaths = (builtins.filter
             (pkgs.lib.strings.hasSuffix ".nix")
-            (utils.file_paths_in_dir ./config)
+            (
+              (utils.file_paths_in_dir ./config)
+              ++ (utils.file_paths_in_dir ./config/langs)
+            )
           );
           modules = map
-            (path: (import path) { inherit pkgs; })
+            (path: (import path) { inherit pkgs lib utils; })
             modulePaths;
 
           nixvimLib = nixvim.lib.${system};
