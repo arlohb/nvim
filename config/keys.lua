@@ -169,6 +169,15 @@ require("which-key").register({
             },
         },
 
+        z = {
+            name = "+spellcheck",
+            g = { "zg", "Good word" },
+            G = { "zw", "Bad word" },
+            l = { "]s", "Next issue" },
+            h = { "[s", "Prev issue" },
+            z = { "z=", "Correct" },
+        },
+
         [";"] = { require("notify").dismiss, "Dismiss notifications" },
 
     },
@@ -194,3 +203,4 @@ vim.keymap.set("n", "go", vim.lsp.buf.type_definition, { desc = "Goto type defin
 -- https://www.reddit.com/r/vim/comments/2k4cbr/comment/clhv03p
 vim.cmd[[nnoremap <expr> k v:count == 0 ? 'gk' : 'k']]
 vim.cmd[[nnoremap <expr> j v:count == 0 ? 'gj' : 'j']]
+
