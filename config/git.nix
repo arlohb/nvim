@@ -1,11 +1,9 @@
 { pkgs, ... }:
 {
-  nixvim = {
-    extraPackages = with pkgs; [
-      # Is probably installed, but just to be sure
-      git
-    ];
-  };
+  nixvim.extraPackages = with pkgs; [
+    # Is probably installed, but just to be sure
+    git
+  ];
 
   # Magit clone
   neogit = ''
