@@ -51,6 +51,7 @@ opt.timeoutlen = 200
 
 -- Enable spell checking
 -- TODO: https://www.reddit.com/r/neovim/comments/nbbl5w/comment/gxz560o
-opt.spelllang = "en_gb"
 opt.spell = true
+opt.spelllang = "en_gb"
+opt.spellfile = vim.fn.expand("~/.config/nvim/spell/en.utf-8.add")
 
