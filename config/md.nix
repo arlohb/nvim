@@ -40,6 +40,11 @@
     vim.keymap.set("n", "gf", "<cmd>MkdnEnter<cr>")
   '';
 
+  nixvim.extraPackages = with pkgs; [
+    # Required by image.vnim for pdfs
+    ghostscript
+  ];
+
   image-nvim = ''
     require("image").setup {
       backend = "kitty",
