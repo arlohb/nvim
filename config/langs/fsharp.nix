@@ -20,6 +20,9 @@
 
     require("ionide").setup {
       on_attach = function()
+        -- TODO: Check if this is still needed
+        -- It could've been updated,
+        -- Especially since support was added in nvim 0.10
         -- https://github.com/tpope/vim-commentary
         vim.opt_local.commentstring = "// %s"
         vim.api.nvim_create_autocmd("BufWritePre", {
