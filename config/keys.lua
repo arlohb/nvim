@@ -175,7 +175,9 @@ require("which-key").register({
             G = { "zw", "Bad word" },
             l = { "]s", "Next issue" },
             h = { "[s", "Prev issue" },
-            z = { "z=", "Correct" },
+            z = { function()
+                vim.opt.spell = not(vim.opt.spell:get())
+            end, "Toggle" },
         },
 
         [";"] = { require("notify").dismiss, "Dismiss notifications" },
