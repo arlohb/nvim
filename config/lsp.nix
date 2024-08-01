@@ -3,7 +3,7 @@
   # Provides correct tabbing and syntax highlighting
   nixvim.plugins.treesitter = {
     enable = true;
-    indent = true;
+    settings.indent.enable = true;
 
     # TODO: Add custom treesitter extension to add lua highlighting to nix
     # Can use nixvimInjections to model on:

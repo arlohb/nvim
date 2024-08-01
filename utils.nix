@@ -44,7 +44,7 @@ rec {
 
   # Make the nixvim instance with a list of modules in plugin syntax
   makeNixvimFromPlugins = nixvim: lib.lists.foldl
-    (result: module: result.nixvimExtend (parsePlugins module))
+    (result: module: result.extend (parsePlugins module))
     (nixvim.makeNixvimWithModule {
       inherit pkgs;
       module = {};
