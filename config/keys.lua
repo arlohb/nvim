@@ -1,9 +1,3 @@
-require("which-key").setup {
-    window = {
-        winblend = 0,
-    },
-}
-
 function open_file(path)
     -- Sub the ' ' for '\ '
     path = path:gsub(" ", "\\ ")
@@ -20,177 +14,150 @@ end
 
 -- Documentation is here:
 -- https://github.com/folke/which-key.nvim
-require("which-key").register({
-    ["<leader>"] = {
-        -- https://github.com/skbolton/titan/blob/4d0d31cc6439a7565523b1018bec54e3e8bc502c/nvim/nvim/lua/mappings/filesystem.lua#L6
-        ["<leader>"] = { function()
+require("which-key").setup {
+    win = {
+        wo = {
+            winblend = 0,
+        },
+    },
+    spec = {
+        { "<leader><leader>", function()
             require("telescope.builtin").find_files({
                 find_command = {'rg', '--files', '--hidden', '-g', '!.git' }}
             )
-        end, "Find File" },
-        [":"] = { "<cmd>Telescope commands<cr>", "Commands" },
+        end, desc = "Find File" },
+        { "<leader>:", "<cmd>Telescope commands<cr>", desc = "Commands" },
+        { "<leader>;", require("notify").dismiss, desc = "Dismiss notifications" },
 
-        f = {
-            name = "+file",
-            r = { "<cmd>Telescope oldfiles<cr>", "Recent Files" },
-            p = { "<cmd>Telescope project<cr>", "Projects" },
-            s = { "<cmd>SudaRead<cr>", "Sudo current file" },
-            l = { "<cmd>NvimTreeFindFile<cr>", "Locate current file" },
-            e = { "<cmd>Oil<cr>", "Edit as Buffer (Oil)" },
-        },
+        -- Moving between windows
+        { "<C-h>", "<C-w>h", desc = "Go Left" },
+        { "<C-l>", "<C-w>l", desc = "Go Right" },
+        { "<C-j>", "<C-w>j", desc = "Go Down" },
+        { "<C-k>", "<C-w>k", desc = "Go Up" },
+        -- Quit the terminal while inside it
+        { "<Esc>", "<cmd>ToggleTerm direction=float<cr>", desc = "Quit Terminal", mode = "t" },
 
-        s = {
-            name = "+search",
-            s = { "<cmd>Telescope current_buffer_fuzzy_find<cr>", "Search File" },
-            p = { "<cmd>Telescope live_grep<cr>", "Search Project" },
-            ["["] = { "<cmd>Telescope resume<cr>", "Resume Search" },
-            e = { "<cmd>Telescope symbols<cr>", "Emojis" },
-            h = { "<cmd>Telescope help_tags<cr>", "Help Pages" },
-            m = { "<cmd>Telescope man_pages<cr>", "Man Pages" },
-            c = { "<cmd>Telescope colorscheme<cr>", "Colourscheme" },
-            r = { "<cmd>Telescope registers<cr>", "Registers" },
-            k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
-        },
+        { "<leader>f", group = "+file" },
+        { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent Files" },
+        { "<leader>fp", "<cmd>Telescope project<cr>", desc = "Projects" },
+        { "<leader>fs", "<cmd>SudaRead<cr>", desc = "Sudo current file" },
+        { "<leader>fl", "<cmd>NvimTreeFindFile<cr>", desc = "Locate current file" },
+        { "<leader>fe", "<cmd>Oil<cr>", desc = "Edit as Buffer (Oil)" },
 
-        w = {
-            name = "+window",
-            h = { "<cmd>vsplit<cr>", "Split Horizontal" },
-            v = { "<cmd>split<cr>", "Split Vertical" },
-        },
+        { "<leader>s", group = "+search" },
+        { "<leader>ss", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Search File" },
+        { "<leader>sp", "<cmd>Telescope live_grep<cr>", desc = "Search Project" },
+        { "<leader>s[", "<cmd>Telescope resume<cr>", desc = "Resume Search" },
+        { "<leader>se", "<cmd>Telescope symbols<cr>", desc = "Emojis" },
+        { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
+        { "<leader>sm", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
+        { "<leader>sc", "<cmd>Telescope colorscheme<cr>", desc = "Colourscheme" },
+        { "<leader>sr", "<cmd>Telescope registers<cr>", desc = "Registers" },
+        { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps" },
 
-        c = {
-            name = "+code",
-            a = { vim.lsp.buf.code_action, "Code Action" },
-            r = { vim.lsp.buf.rename, "Rename" },
-            R = { "<cmd>Telescope lsp_references<cr>", "References" },
-            i = { "<cmd>Telescope lsp_implementations<cr>", "Implementations" },
-            s = { "<cmd>Telescope lsp_document_symbols<cr>", "Symbols" },
-            S = { "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "Project Symbols" },
-            d = { "<cmd>Telescope diagnostics<cr>", "Diagnostics" },
-        },
+        { "<leader>w", group = "+window" },
+        { "<leader>wh", "<cmd>vsplit<cr>", desc = "Split Horizontal" },
+        { "<leader>wv", "<cmd>split<cr>", desc = "Split Vertical" },
 
-        g = {
-            name = "+git",
-            g = { require("neogit").open, "NeoGit" },
-            d = { "<cmd>Gitsigns diffthis<cr>", "Diff" },
-            s = { "<cmd>Telescope git_status<cr>", "Status" },
-            S = { "<cmd>Telescope git_stash<cr>", "Stashes" },
-            c = { "<cmd>Telescope git_commits<cr>", "Commits" },
-            C = { "<cmd>Telescope git_bcommits<cr>", "File Commits" },
-            b = { "<cmd>Gitsigns blame_line<cr>", "Blame Line"},
-            B = { "<cmd>Telescope git_branches<cr>", "Branches" },
-            a = { "<cmd>Gitsigns stage_hunk<cr>", "Stage" },
-            u = { "<cmd>Gitsigns undo_stage_hunk<cr>", "Undo Stage" },
-            p = { "<cmd>Gitsigns preview_hunk<cr>", "Preview" },
-            x = { "<cmd>Gitsigns reset_hunk<cr>", "Discard" },
-        },
+        { "<leader>c", group = "+code" },
+        { "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action" },
+        { "<leader>cr", vim.lsp.buf.rename, desc = "Rename" },
+        { "<leader>cR", "<cmd>Telescope lsp_references<cr>", desc = "References" },
+        { "<leader>ci", "<cmd>Telescope lsp_implementations<cr>", desc = "Implementations" },
+        { "<leader>cs", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Symbols" },
+        { "<leader>cS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc = "Project Symbols" },
+        { "<leader>cd", "<cmd>Telescope diagnostics<cr>", desc = "Diagnostics" },
 
-        o = {
-            name = "+open",
-            p = { "<cmd>NvimTreeToggle<cr>", "File Tree" },
-            t = { "<cmd>ToggleTerm 1 direction=float<cr>", "Terminal Float" },
-            T = { "<cmd>ToggleTerm 2 direction=vertical<cr>", "Terminal Bar" },
-            l = { "<cmd>LspInfo<cr>", "Lsp Info" },
-            n = { "<cmd>Telescope notify<cr>", "Notifications" },
-        },
+        { "<leader>g", group = "+git" },
+        { "<leader>gg", require("neogit").open, desc = "NeoGit" },
+        { "<leader>gd", "<cmd>Gitsigns diffthis<cr>", desc = "Diff" },
+        { "<leader>gs", "<cmd>Telescope git_status<cr>", desc = "Status" },
+        { "<leader>gS", "<cmd>Telescope git_stash<cr>", desc = "Stashes" },
+        { "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "Commits" },
+        { "<leader>gC", "<cmd>Telescope git_bcommits<cr>", desc = "File Commits" },
+        { "<leader>gb", "<cmd>Gitsigns blame_line<cr>", desc = "Blame Line"},
+        { "<leader>gB", "<cmd>Telescope git_branches<cr>", desc = "Branches" },
+        { "<leader>ga", "<cmd>Gitsigns stage_hunk<cr>", desc = "Stage" },
+        { "<leader>gu", "<cmd>Gitsigns undo_stage_hunk<cr>", desc = "Undo Stage" },
+        { "<leader>gp", "<cmd>Gitsigns preview_hunk<cr>", desc = "Preview" },
+        { "<leader>gx", "<cmd>Gitsigns reset_hunk<cr>", desc = "Discard" },
 
-        d = {
-            name = "+debug",
-            c = { require("dap").continue, "Continue" },
-            l = { require("dap").step_over, "Step over" },
-            j = { require("dap").step_into, "Step into" },
-            k = { require("dap").step_out, "Step out" },
-            b = { require("dap").toggle_breakpoint, "Toggle Breakpoint" },
-            r = { "<cmd>RustRunnables<cr>", "Runnables" },
-            d = { "<cmd>RustDebuggables<cr>", "Debuggables" },
-        },
+        { "<leader>o", group = "+open" },
+        { "<leader>op", "<cmd>NvimTreeToggle<cr>", desc = "File Tree" },
+        { "<leader>ot", "<cmd>ToggleTerm 1 direction=float<cr>", desc = "Terminal Float" },
+        { "<leader>oT", "<cmd>ToggleTerm 2 direction=vertical<cr>", desc = "Terminal Bar" },
+        { "<leader>ol", "<cmd>LspInfo<cr>", desc = "Lsp Info" },
+        { "<leader>on", "<cmd>Telescope notify<cr>", desc = "Notifications" },
 
-        n = {
-            name = "+notes",
-            n = {
-                function()
-                    vim.cmd("e ~/Nextcloud/Vault/Scratch.md")
-                    require("telescope.builtin").find_files({
-                        find_command = {'rg', '--files', '--hidden', '-g', '!.git' }}
-                    )
-                end,
-                "Open Vault"
-            },
+        { "<leader>d", group = "+debug" },
+        { "<leader>dc", require("dap").continue, desc = "Continue" },
+        { "<leader>dl", require("dap").step_over, desc = "Step over" },
+        { "<leader>dj", require("dap").step_into, desc = "Step into" },
+        { "<leader>dk", require("dap").step_out, desc = "Step out" },
+        { "<leader>db", require("dap").toggle_breakpoint, desc = "Toggle Breakpoint" },
+        { "<leader>dr", "<cmd>RustRunnables<cr>", desc = "Runnables" },
+        { "<leader>dd", "<cmd>RustDebuggables<cr>", desc = "Debuggables" },
 
-            c = { "gg/incomplete<cr>Daunchecked<esc>", "Complete Note" },
-            C = { "gg/unchecked<cr>2x", "Check Note" },
+        { "<leader>n", group = "+notes" },
+        { "<leader>nn", function()
+            vim.cmd("e ~/Nextcloud/Vault/Scratch.md")
+            require("telescope.builtin").find_files({
+                find_command = {'rg', '--files', '--hidden', '-g', '!.git' }}
+            )
+        end, desc = "Open Vault" },
+        { "<leader>nc", "gg/incomplete<cr>Daunchecked<esc>", desc = "Complete Note" },
+        { "<leader>nC", "gg/unchecked<cr>2x", desc = "Check Note" },
+        { "<leader>nl", function()
+            -- Get the current file
+            local path = vim.fn.expand("%")
+            -- Find the position of the last slash
+            local last_slash = path:find("/[^/]*$")
+            -- Get the pos of first space in file name
+            local first_space = last_slash + path:sub(last_slash + 1):find(' ')
+            -- Get the lecture number and add 1
+            local lecture_number = tonumber(path:sub(first_space + 1, first_space + 2)) + 1
+            -- Add the new lecture number to the path
+            path = path:sub(0, first_space) .. string.format("%02d", lecture_number)
 
-            l = {
-                function()
-                    -- Get the current file
-                    local path = vim.fn.expand("%")
-                    -- Find the position of the last slash
-                    local last_slash = path:find("/[^/]*$")
-                    -- Get the pos of first space in file name
-                    local first_space = last_slash + path:sub(last_slash + 1):find(' ')
-                    -- Get the lecture number and add 1
-                    local lecture_number = tonumber(path:sub(first_space + 1, first_space + 2)) + 1
-                    -- Add the new lecture number to the path
-                    path = path:sub(0, first_space) .. string.format("%02d", lecture_number)
+            open_file(path .. "*")
+        end, desc = "Next Lecture" },
+        { "<leader>nh", function()
+            -- Get the current file
+            local path = vim.fn.expand("%")
+            -- Find the position of the last slash
+            local last_slash = path:find("/[^/]*$")
+            -- Get the pos of first space in file name
+            local first_space = last_slash + path:sub(last_slash + 1):find(' ')
+            -- Get the lecture number and add 1
+            local lecture_number = tonumber(path:sub(first_space + 1, first_space + 2)) - 1
+            -- Add the new lecture number to the path
+            path = path:sub(0, first_space) .. string.format("%02d", lecture_number)
 
-                    open_file(path .. "*")
-                end,
-                "Next Lecture"
-            },
-            h = {
-                function()
-                    -- Get the current file
-                    local path = vim.fn.expand("%")
-                    -- Find the position of the last slash
-                    local last_slash = path:find("/[^/]*$")
-                    -- Get the pos of first space in file name
-                    local first_space = last_slash + path:sub(last_slash + 1):find(' ')
-                    -- Get the lecture number and add 1
-                    local lecture_number = tonumber(path:sub(first_space + 1, first_space + 2)) - 1
-                    -- Add the new lecture number to the path
-                    path = path:sub(0, first_space) .. string.format("%02d", lecture_number)
+            open_file(path .. "*")
+        end, desc = "Previous Lecture" },
+        { "<leader>nk", function()
+            -- Get the current file
+            local path = vim.fn.expand("%")
+            -- Find the position of the last slash
+            local last_slash = path:find("/[^/]*$")
+            -- Add the lecture number "00" to the path
+            path = path:sub(0, last_slash + 5) .. "00.md"
 
-                    open_file(path .. "*")
-                end,
-                "Previous Lecture"
-            },
-            k = {
-                function()
-                    -- Get the current file
-                    local path = vim.fn.expand("%")
-                    -- Find the position of the last slash
-                    local last_slash = path:find("/[^/]*$")
-                    -- Add the lecture number "00" to the path
-                    path = path:sub(0, last_slash + 5) .. "00.md"
+            open_file(path)
+        end, desc = "This Module" },
 
-                    open_file(path)
-                end,
-                "This Module"
-            },
-        },
-
-        z = {
-            name = "+spellcheck",
-            g = { "zg", "Good word" },
-            G = { "zw", "Bad word" },
-            l = { "]s", "Next issue" },
-            h = { "[s", "Prev issue" },
-            z = { function()
-                vim.opt.spell = not(vim.opt.spell:get())
-            end, "Toggle" },
-        },
-
-        [";"] = { require("notify").dismiss, "Dismiss notifications" },
-
+        { "<leader>z", group = "+spellcheck" },
+        { "<leader>zg", "zg", desc = "Good word" },
+        { "<leader>zG", "zw", desc = "Bad word" },
+        { "<leader>zl", "]s", desc = "Next issue" },
+        { "<leader>zh", "[s", desc = "Prev issue" },
+        { "<leader>zz", function()
+            vim.opt.spell = not(vim.opt.spell:get())
+        end, desc = "Toggle" },
     },
-    -- Moving between windows
-    ["<C-h>"] = { "<C-w>h", "Go Left" },
-    ["<C-l>"] = { "<C-w>l", "Go Right" },
-    ["<C-j>"] = { "<C-w>j", "Go Down" },
-    ["<C-k>"] = { "<C-w>k", "Go Up" },
-    -- Quit the terminal while inside it
-    ["<Esc>"] = { "<cmd>ToggleTerm direction=float<cr>", "Quit Terminal", mode = "t" },
-})
+}
+
+-- TODO: Move these into the which key config ?
 
 -- TODO: Switch to 'gcc' and 'gc' as native support was added in nvim 0.10
 vim.keymap.set("n", ";", "<cmd>Commentary<cr>", { desc = "Comment" })
