@@ -44,6 +44,12 @@
             name = "nixvim-check";
           };
           packages.default = nvim;
+
+          devShells.default = pkgs.mkShell {
+            buildInputs = with pkgs; [
+              lua-language-server
+            ];
+          };
         };
     };
 }
