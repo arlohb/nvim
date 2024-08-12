@@ -6,10 +6,14 @@
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     flake-parts.url = "github:hercules-ci/flake-parts";
+
+    lecture-notes-nvim.url = "github:arlohb/lecture-notes.nvim";
+    # lecture-notes-nvim.url = "git+file:///home/arlo/code/lecture-notes.nvim";
+    lecture-notes-nvim.flake = false;
   };
 
   outputs =
-    { nixvim, flake-parts, ... }@inputs:
+    { nixvim, flake-parts, lecture-notes-nvim, ... }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
         "x86_64-linux"
@@ -21,7 +25,14 @@
       perSystem =
         { pkgs, lib, system, ... }:
         let
-          utils = import ./utils.nix pkgs;
+          custom = {
+            lecture-notes-nvim = pkgs.vimUtils.buildVimPlugin {
+              name = "lecture-notes";
+              src = lecture-notes-nvim;
+            };
+          };
+
+          utils = import ./utils.nix { inherit pkgs lib custom; };
 
           modulePaths = (builtins.filter
             (pkgs.lib.strings.hasSuffix ".nix")

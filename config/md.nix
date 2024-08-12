@@ -61,4 +61,11 @@
   '';
 
   vim-table-mode = "";
+
+  custom.lecture-notes-nvim = ''
+    require("lecture-notes").setup {
+      vault_location = "~/Nextcloud/Vault/Scratch.md",
+      moodle_simple_dl_exe = "~/code/moodle-simple-dl/moodle-simple-dl",
+    }
+  '';
 }

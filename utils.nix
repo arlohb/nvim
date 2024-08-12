@@ -1,4 +1,4 @@
-pkgs:
+{ pkgs, custom, ... }:
 let
   lib = pkgs.lib;
 in
@@ -28,17 +28,28 @@ rec {
   # 
   parsePlugins = lib.attrsets.foldlAttrs
     (result: name: value:
-      if name == "nixvim"
-      then (result // value)
-      else result // {
-        extraPlugins = result.extraPlugins
-        ++ (if name != "none"
-          then [
-            pkgs.vimPlugins."${name}"
-          ]
-          else [ ]);
-        extraConfigLua = result.extraConfigLua + value;
-      }
+      if name == "nixvim" then
+        result // value
+      else if name == "custom" then
+        result // {
+          extraPlugins = result.extraPlugins
+          ++ (lib.attrsets.mapAttrsToList
+            (plugin: config: custom.${plugin})
+            value
+          );
+          extraConfigLua = result.extraConfigLua
+            + (lib.strings.concatStrings (lib.attrsets.attrValues value));
+        }
+      else
+        result // {
+          extraPlugins = result.extraPlugins
+          ++ (if name != "none"
+            then [
+              pkgs.vimPlugins."${name}"
+            ]
+            else [ ]);
+          extraConfigLua = result.extraConfigLua + value;
+        }
     )
     { extraPlugins = []; extraConfigLua = ""; };
 
