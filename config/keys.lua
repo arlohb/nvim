@@ -44,6 +44,7 @@ require("which-key").setup {
         { "<leader>w", group = "+window" },
         { "<leader>wh", "<cmd>vsplit<cr>", desc = "Split Horizontal" },
         { "<leader>wv", "<cmd>split<cr>", desc = "Split Vertical" },
+        { "<leader>wd", "<cmd>w|%bdelete|edit #|normal`\"<cr>", desc = "Kill all other buffers"},
 
         { "<leader>c", group = "+code" },
         { "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action" },
