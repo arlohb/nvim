@@ -168,17 +168,17 @@
     "lecture-notes-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1723476450,
-        "narHash": "sha256-r3u8VfD6sklMVwoD2lL0t5/ijWStT34DGRUEww0Nufg=",
-        "ref": "refs/heads/main",
-        "rev": "7de7389a224c77d79b84c53d35101c956115db90",
-        "revCount": 6,
-        "type": "git",
-        "url": "file:///home/arlo/code/lecture-notes.nvim"
+        "lastModified": 1725042713,
+        "narHash": "sha256-v82kxelsJUQTUqFHjJRPpm+tI5VNNxgSX7+KyzhSp/s=",
+        "owner": "arlohb",
+        "repo": "lecture-notes.nvim",
+        "rev": "dba43ad9bd9ee4d0567473af30765d83526b5b52",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/arlo/code/lecture-notes.nvim"
+        "owner": "arlohb",
+        "repo": "lecture-notes.nvim",
+        "type": "github"
       }
     },
     "nix-darwin": {
