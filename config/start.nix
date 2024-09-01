@@ -51,13 +51,12 @@
     }
   ";
 
-  # TODO: Add back custom plugins
-  # custom.drop-nvim = ''
-  #   require("drop").setup {
-  #     theme = "snow",
-  #     max = 1000,
-  #     interval = 70,
-  #     screensaver = false,
-  #   }
-  # '';
+  custom.drop-nvim = ''
+    require("drop").setup {
+      theme = "snow",
+      max = 500,
+      interval = 70,
+      screensaver = false,
+    }
+  '';
 }

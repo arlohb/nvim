@@ -10,10 +10,13 @@
     lecture-notes-nvim.url = "github:arlohb/lecture-notes.nvim";
     # lecture-notes-nvim.url = "git+file:///home/arlo/code/lecture-notes.nvim";
     lecture-notes-nvim.flake = false;
+
+    drop-nvim.url = "github:folke/drop.nvim";
+    drop-nvim.flake = false;
   };
 
   outputs =
-    { nixvim, flake-parts, lecture-notes-nvim, ... }@inputs:
+    { nixvim, flake-parts, ... }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
         "x86_64-linux"
@@ -28,7 +31,12 @@
           custom = {
             lecture-notes-nvim = pkgs.vimUtils.buildVimPlugin {
               name = "lecture-notes";
-              src = lecture-notes-nvim;
+              src = inputs.lecture-notes-nvim;
+            };
+
+            drop-nvim = pkgs.vimUtils.buildVimPlugin {
+              name = "drop.nvim";
+              src = inputs.drop-nvim;
             };
           };
 

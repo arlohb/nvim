@@ -21,6 +21,22 @@
         "type": "github"
       }
     },
+    "drop-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1725088928,
+        "narHash": "sha256-knBTWhrcrtoyXGh+Fd0l9VBPaGshz50RDPHL0rHYOxM=",
+        "owner": "folke",
+        "repo": "drop.nvim",
+        "rev": "65ed904cc2c152fbb8f2ee7c317aef4ce9914d2f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "folke",
+        "repo": "drop.nvim",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "locked": {
         "lastModified": 1696426674,
@@ -282,6 +298,7 @@
     },
     "root": {
       "inputs": {
+        "drop-nvim": "drop-nvim",
         "flake-parts": "flake-parts",
         "lecture-notes-nvim": "lecture-notes-nvim",
         "nixpkgs": "nixpkgs",
