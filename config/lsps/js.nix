@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  tsserver = {
+  ts-ls = {
     enable = true;
     settings = {
       typescript.format.enable = false;

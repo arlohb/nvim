@@ -13,6 +13,11 @@
 
     drop-nvim.url = "github:folke/drop.nvim";
     drop-nvim.flake = false;
+
+    # lean-nvim has removed lean3 support,
+    # But left it available with a git tag
+    lean3-nvim.url = "github:Julian/lean.nvim?ref=lean3";
+    lean3-nvim.flake = false;
   };
 
   outputs =
@@ -38,6 +43,11 @@
               name = "drop.nvim";
               src = inputs.drop-nvim;
             };
+
+            lean3-nvim = pkgs.vimUtils.buildVimPlugin {
+              name = "lean.nvim";
+              src = inputs.lean3-nvim;
+            };
           };
 
           utils = import ./utils.nix { inherit pkgs lib custom; };
@@ -50,7 +60,7 @@
             )
           );
           modules = map
-            (path: (import path) { inherit pkgs lib utils; })
+            (path: (import path) { inherit pkgs lib custom utils; })
             modulePaths;
 
           nixvimLib = nixvim.lib.${system};
