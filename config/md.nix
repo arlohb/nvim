@@ -52,7 +52,7 @@
         markdown = {
           enabled = true,
           download_remote_images = true,
-          clear_in_insert_mode = true,
+          clear_in_insert_mode = false,
         },
       },
       max_width = 35,
