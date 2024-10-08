@@ -4,6 +4,10 @@
   nixvim.plugins.treesitter = {
     enable = true;
     settings.indent.enable = true;
+    settings.highlight = {
+      enable = true;
+      additional_vim_regex_highlighting = true;
+    };
 
     # TODO: Add custom treesitter extension to add lua highlighting to nix
     # Can use nixvimInjections to model on:
