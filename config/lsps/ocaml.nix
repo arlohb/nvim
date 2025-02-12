@@ -1,0 +1,4 @@
+{ pkgs, ... }:
+{
+  ocamllsp.enable = true;
+}
