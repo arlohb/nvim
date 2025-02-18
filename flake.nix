@@ -18,6 +18,9 @@
     # But left it available with a git tag
     lean3-nvim.url = "github:Julian/lean.nvim?ref=lean3";
     lean3-nvim.flake = false;
+
+    latex-nvim.url = "github:robbielyman/latex.nvim";
+    latex-nvim.flake = false;
   };
 
   outputs =
@@ -47,6 +50,11 @@
             lean3-nvim = pkgs.vimUtils.buildVimPlugin {
               name = "lean.nvim";
               src = inputs.lean3-nvim;
+            };
+
+            latex-nvim = pkgs.vimUtils.buildVimPlugin {
+              name = "latex.nvim";
+              src = inputs.latex-nvim;
             };
           };
 

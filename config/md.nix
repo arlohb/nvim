@@ -10,6 +10,18 @@
   # - I think this fixes it temporarily
   # - :TSBufDisable highlight
 
+  nixvim.plugins.render-markdown = {
+    enable = true;
+    settings = {
+      latex.enabled = false;
+      win_options.conceallevel.rendered = 2;
+    };
+  };
+
+  custom.latex-nvim = ''
+    require("latex").setup {}
+  '';
+
   mkdnflow-nvim = ''
     require("mkdnflow").setup {
       modules = {

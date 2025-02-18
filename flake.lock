@@ -181,6 +181,22 @@
         "type": "github"
       }
     },
+    "latex-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1711416742,
+        "narHash": "sha256-UfcBpuYYidM7J34H8KCb+w4jklZeBZbA/17DwYnhzws=",
+        "owner": "robbielyman",
+        "repo": "latex.nvim",
+        "rev": "bb480bdb8842789778f41786438607f550d540e5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "robbielyman",
+        "repo": "latex.nvim",
+        "type": "github"
+      }
+    },
     "lean3-nvim": {
       "flake": false,
       "locked": {
@@ -317,6 +333,7 @@
       "inputs": {
         "drop-nvim": "drop-nvim",
         "flake-parts": "flake-parts",
+        "latex-nvim": "latex-nvim",
         "lean3-nvim": "lean3-nvim",
         "lecture-notes-nvim": "lecture-notes-nvim",
         "nixpkgs": "nixpkgs",
