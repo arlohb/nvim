@@ -71,6 +71,11 @@
       { name = "nvim_lua"; }
       { name = "path"; }
       { name = "vsnip"; }
+      {
+        name = "latex_symbols";
+        # Insert the command instead of the symbol
+        option.strategy = 2;
+      }
     ];
 
     # Snippets
