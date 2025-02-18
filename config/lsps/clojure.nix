@@ -1,4 +1,4 @@
 { pkgs, ... }:
 {
-  clojure-lsp.enable = true;
+  clojure_lsp.enable = true;
 }

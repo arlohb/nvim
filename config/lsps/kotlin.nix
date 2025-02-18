@@ -1,4 +1,4 @@
 { pkgs, ... }:
 {
-  kotlin-language-server.enable = true;
+  kotlin_language_server.enable = true;
 }

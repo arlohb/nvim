@@ -1,4 +1,4 @@
 { pkgs, ... }:
 {
-  lua-ls.enable = true;
+  lua_ls.enable = true;
 }

@@ -6,8 +6,8 @@ let
     package = custom.lean3-nvim;
     leanPackage = pkgs.lean;
 
-    lsp.enable = false;
-    lsp3 = {
+    settings.lsp.enable = false;
+    settings.lsp3 = {
       cmd = [ "npm" "exec" "lean-language-server" "--" "--stdio" "-M" "4096" "-T" "100000" ];
       filetypes = [ "lean" "lean3" ];
     };
@@ -15,7 +15,7 @@ let
 
   lean4 = {
     enable = true;
-    lsp.enable = true;
+    settings.lsp.enable = true;
     # Allow lean package to be handled by elan and lake
     leanPackage = null;
   };
