@@ -15,12 +15,15 @@
     settings = {
       latex.enabled = false;
       win_options.conceallevel.rendered = 2;
+      on.attach = { __raw = ''
+        function()
+          require("nabla").enable_virt({ autogen = true })
+        end
+      ''; };
     };
   };
 
-  custom.latex-nvim = ''
-    require("latex").setup {}
-  '';
+  nixvim.plugins.nabla.enable = true;
 
   mkdnflow-nvim = ''
     require("mkdnflow").setup {
