@@ -11,7 +11,7 @@ require("which-key").setup {
             require("telescope.builtin").find_files({
                 find_command = {'rg', '--files', '--hidden', '-g', '!.git' }}
             )
-        end, desc = "Find File" },
+        end, desc = "Find Project File" },
         { "<leader>:", "<cmd>Telescope commands<cr>", desc = "Commands" },
         { "<leader>;", require("notify").dismiss, desc = "Dismiss notifications" },
 
@@ -24,6 +24,11 @@ require("which-key").setup {
         { "<Esc>", "<cmd>ToggleTerm direction=float<cr>", desc = "Quit Terminal", mode = "t" },
 
         { "<leader>f", group = "+file" },
+        { "<leader>ff", function()
+            require("telescope.builtin").find_files({
+                find_command = {'rg', '--files', '--hidden', '--no-ignore', '-g', '!.git' }}
+            )
+        end, desc = "Find Any File" },
         { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent Files" },
         { "<leader>fp", "<cmd>Telescope project<cr>", desc = "Projects" },
         { "<leader>fs", "<cmd>SudaRead<cr>", desc = "Sudo current file" },
