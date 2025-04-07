@@ -55,3 +55,11 @@ opt.spell = true
 opt.spelllang = "en_gb"
 opt.spellfile = vim.fn.expand("~/.config/nvim/spell/en.utf-8.add")
 
+-- Disable spellchecking for yaml
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "yaml",
+    callback = function()
+        vim.opt_local.spell = false
+    end
+})
+
