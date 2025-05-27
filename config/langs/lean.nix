@@ -16,9 +16,10 @@ let
   lean4 = {
     enable = true;
     settings.lsp.enable = true;
-    # Allow lean package to be handled by elan and lake
-    leanPackage = null;
   };
 in {
   nixvim.plugins.lean = lean4;
+
+  # Allow lean package to be handled by elan and lake
+  nixvim.dependencies.lean.enable = false;
 }
