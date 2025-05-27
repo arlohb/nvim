@@ -158,11 +158,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1748343080,
-        "narHash": "sha256-bQ7R+tjiCG3GT+SdGiYk8h1vrCcxAZ30pOEuvJu81jA=",
+        "lastModified": 1748354423,
+        "narHash": "sha256-a5un1UKsZZ/xQzauGVUs+1VVPrpxzJnXhwB0zoyr2DU=",
         "owner": "arlohb",
         "repo": "lecture-notes.nvim",
-        "rev": "eceecfcf839e767ed433ff7717cb34255c8b7857",
+        "rev": "c56666bab721134b259326ee480364f00aa4be79",
         "type": "github"
       },
       "original": {

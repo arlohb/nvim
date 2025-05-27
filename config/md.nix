@@ -55,11 +55,6 @@
     vim.keymap.set("n", "gf", "<cmd>MkdnEnter<cr>")
   '';
 
-  nixvim.extraPackages = with pkgs; [
-    # Required by image.vnim for pdfs
-    ghostscript
-  ];
-
   image-nvim = ''
     require("image").setup {
       backend = "kitty",
@@ -83,4 +78,12 @@
       moodle_simple_dl_exe = "~/code/moodle-simple-dl/moodle-simple-dl",
     }
   '';
+
+  nixvim.extraPackages = with pkgs; [
+    # Required by image.nvim for pdfs
+    ghostscript
+    # Required by lecture-notes.nvim for YouTube downloads
+    yt-dlp
+    ffmpeg
+  ];
 }
