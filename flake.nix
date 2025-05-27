@@ -9,7 +9,6 @@
 
     lecture-notes-nvim.url = "github:arlohb/lecture-notes.nvim";
     # lecture-notes-nvim.url = "git+file:///home/arlo/code/lecture-notes.nvim";
-    lecture-notes-nvim.flake = false;
 
     drop-nvim.url = "github:folke/drop.nvim";
     drop-nvim.flake = false;
@@ -37,10 +36,7 @@
         { pkgs, lib, system, ... }:
         let
           custom = {
-            lecture-notes-nvim = pkgs.vimUtils.buildVimPlugin {
-              name = "lecture-notes";
-              src = inputs.lecture-notes-nvim;
-            };
+            lecture-notes-nvim = inputs.lecture-notes-nvim.packages."${system}".default;
 
             drop-nvim = pkgs.vimUtils.buildVimPlugin {
               name = "drop.nvim";
