@@ -20,6 +20,7 @@
           require("nabla").enable_virt({ autogen = true })
         end
       ''; };
+      html.comment.conceal = false;
     };
   };
 
