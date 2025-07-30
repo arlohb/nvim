@@ -13,7 +13,8 @@ require("which-key").setup {
             )
         end, desc = "Find Project File" },
         { "<leader>:", "<cmd>Telescope commands<cr>", desc = "Commands" },
-        { "<leader>;", require("notify").dismiss, desc = "Dismiss notifications" },
+        -- TODO: Disable when vscode
+        -- { "<leader>;", require("notify").dismiss, desc = "Dismiss notifications" },
 
         -- Moving between windows
         { "<C-h>", "<C-w>h", desc = "Go Left" },
@@ -61,7 +62,8 @@ require("which-key").setup {
         { "<leader>cd", "<cmd>Telescope diagnostics<cr>", desc = "Diagnostics" },
 
         { "<leader>g", group = "+git" },
-        { "<leader>gg", require("neogit").open, desc = "NeoGit" },
+        -- TODO: Disable when vscode
+        -- { "<leader>gg", require("neogit").open, desc = "NeoGit" },
         { "<leader>gd", "<cmd>Gitsigns diffthis<cr>", desc = "Diff" },
         { "<leader>gs", "<cmd>Telescope git_status<cr>", desc = "Status" },
         { "<leader>gS", "<cmd>Telescope git_stash<cr>", desc = "Stashes" },
@@ -82,23 +84,26 @@ require("which-key").setup {
         { "<leader>on", "<cmd>Telescope notify<cr>", desc = "Notifications" },
 
         { "<leader>d", group = "+debug" },
-        { "<leader>dc", require("dap").continue, desc = "Continue" },
-        { "<leader>dl", require("dap").step_over, desc = "Step over" },
-        { "<leader>dj", require("dap").step_into, desc = "Step into" },
-        { "<leader>dk", require("dap").step_out, desc = "Step out" },
-        { "<leader>db", require("dap").toggle_breakpoint, desc = "Toggle Breakpoint" },
+        -- TODO: Disable when vscode
+        -- { "<leader>dc", require("dap").continue, desc = "Continue" },
+        -- { "<leader>dl", require("dap").step_over, desc = "Step over" },
+        -- { "<leader>dj", require("dap").step_into, desc = "Step into" },
+        -- { "<leader>dk", require("dap").step_out, desc = "Step out" },
+        -- { "<leader>db", require("dap").toggle_breakpoint, desc = "Toggle Breakpoint" },
         { "<leader>dr", "<cmd>RustRunnables<cr>", desc = "Runnables" },
         { "<leader>dd", "<cmd>RustDebuggables<cr>", desc = "Debuggables" },
 
         { "<leader>n", group = "+notes" },
-        { "<leader>nn", require("lecture-notes").open_vault, desc = "Open Vault" },
+        -- TODO: Disable when vscode
+        -- { "<leader>nn", require("lecture-notes").open_vault, desc = "Open Vault" },
         { "<leader>nc", "gg/incomplete<cr>Daunchecked<esc>", desc = "Complete Note" },
         { "<leader>nC", "gg/unchecked<cr>2x", desc = "Check Note" },
-        { "<leader>nl", require("lecture-notes").next_lecture, desc = "Next Lecture" },
-        { "<leader>nh", require("lecture-notes").prev_lecture, desc = "Previous Lecture" },
-        { "<leader>nk", require("lecture-notes").parent_module, desc = "This Module" },
-        { "<leader>nd", require("lecture-notes").download_linked, desc = "Moodle Download Linked" },
-        { "<leader>nD", require("lecture-notes").download, desc = "Moodle Download" },
+        -- TODO: Disable when vscode
+        -- { "<leader>nl", require("lecture-notes").next_lecture, desc = "Next Lecture" },
+        -- { "<leader>nh", require("lecture-notes").prev_lecture, desc = "Previous Lecture" },
+        -- { "<leader>nk", require("lecture-notes").parent_module, desc = "This Module" },
+        -- { "<leader>nd", require("lecture-notes").download_linked, desc = "Moodle Download Linked" },
+        -- { "<leader>nD", require("lecture-notes").download, desc = "Moodle Download" },
 
         { "<leader>z", group = "+spellcheck" },
         { "<leader>zg", "zg", desc = "Good word" },
