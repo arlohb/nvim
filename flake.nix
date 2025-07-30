@@ -70,6 +70,14 @@
           nixvimLib = nixvim.lib.${system};
           nixvim' = nixvim.legacyPackages.${system};
           nvim = utils.makeNixvimFromPlugins nixvim' modules;
+
+          vscode-nvim = utils.makeNixvimFromPlugins nixvim' (map
+            (path: (import path) { inherit pkgs lib custom utils; })
+            [
+              ./config/base.nix
+              ./config/editing.nix
+              ./config/keys.nix
+            ]);
         in
         {
           checks.default = nixvimLib.check.mkTestDerivationFromNvim {
@@ -77,6 +85,7 @@
             name = "nixvim-check";
           };
           packages.default = nvim;
+          packages.vscode-nvim = vscode-nvim;
 
           devShells.default = pkgs.mkShell {
             buildInputs = with pkgs; [
