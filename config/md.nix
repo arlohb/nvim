@@ -4,8 +4,8 @@
     enable = true;
     settings.image = {
       enable = true;
-      doc.max_width = 40;
-      doc.max_height = 40;
+      doc.max_width = 80;
+      doc.max_height = 10;
     };
   };
 
