@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   none = ''
-    require("lspconfig").jdtls.setup {}
+    vim.lsp.enable("jdtls")
   '';
 }
 

@@ -80,7 +80,7 @@
 
   nixvim.plugins.rainbow-delimiters = {
     enable = true;
-    highlight = [
+    settings.highlight = [
       # Removing red and green make it look better
       # "RainbowRed"
       "RainbowOrange"
