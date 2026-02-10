@@ -1,30 +1,13 @@
 { pkgs, ... }:
 {
-  # TODO: Maybe in the future
-  # - https://github.com/jakewvincent/mkdnflow.nvim
-  # - https://github.com/iamcco/markdown-preview.nvim
-  # - https://alpha2phi.medium.com/neovim-for-beginners-note-taking-writing-diagramming-and-presentation-72d301aae28
-
-  # TODO: Maybe fix this
-  # Tables really slowing down markdown editing
-  # - I think this fixes it temporarily
-  # - :TSBufDisable highlight
-
-  nixvim.plugins.render-markdown = {
+  nixvim.plugins.snacks = {
     enable = true;
-    settings = {
-      latex.enabled = false;
-      win_options.conceallevel.rendered = 2;
-      on.attach = { __raw = ''
-        function()
-          require("nabla").enable_virt({ autogen = true })
-        end
-      ''; };
-      html.comment.conceal = false;
+    settings.image = {
+      enable = true;
+      doc.max_width = 40;
+      doc.max_height = 40;
     };
   };
-
-  nixvim.plugins.nabla.enable = true;
 
   mkdnflow-nvim = ''
     require("mkdnflow").setup {
@@ -56,21 +39,6 @@
     vim.keymap.set("n", "gf", "<cmd>MkdnEnter<cr>")
   '';
 
-  image-nvim = ''
-    require("image").setup {
-      backend = "kitty",
-      integrations = {
-        markdown = {
-          enabled = true,
-          download_remote_images = true,
-          clear_in_insert_mode = false,
-        },
-      },
-      max_width = 35,
-      window_overlap_clear_enabled = true,
-    }
-  '';
-
   vim-table-mode = "";
 
   custom.lecture-notes-nvim = ''
@@ -81,10 +49,11 @@
   '';
 
   nixvim.extraPackages = with pkgs; [
-    # Required by image.nvim for pdfs
-    ghostscript
     # Required by lecture-notes.nvim for YouTube downloads
     yt-dlp
     ffmpeg
+    # Required by snacks.nvim image module for Latex rendering
+    tectonic # This is apparently faster
+    ghostscript
   ];
 }
