@@ -64,7 +64,7 @@
             )
           );
           modules = map
-            (path: (import path) { inherit pkgs lib custom utils; })
+            (path: (import path) { inherit pkgs lib custom utils; vscode = false; })
             modulePaths;
 
           nixvimLib = nixvim.lib.${system};
@@ -72,7 +72,7 @@
           nvim = utils.makeNixvimFromPlugins nixvim' modules;
 
           vscode-nvim = utils.makeNixvimFromPlugins nixvim' (map
-            (path: (import path) { inherit pkgs lib custom utils; })
+            (path: (import path) { inherit pkgs lib custom utils; vscode = true; })
             [
               ./config/base.nix
               ./config/editing.nix
