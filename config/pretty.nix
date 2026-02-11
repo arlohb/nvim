@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, vscode, ... }:
 {
   # The theme(s)
   sonokai = ''
