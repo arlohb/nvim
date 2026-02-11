@@ -78,6 +78,8 @@
     }
   '';
 
+} // (if vscode then {} else {
+
   nixvim.plugins.rainbow-delimiters = {
     enable = true;
     settings.highlight = [
@@ -90,4 +92,4 @@
       "RainbowViolet"
     ];
   };
-}
+})
