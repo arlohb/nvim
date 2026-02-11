@@ -47,6 +47,21 @@
     require("telescope").load_extension("notify")
   '';
 
+  nixvim.plugins.rainbow-delimiters = {
+    enable = true;
+    settings.highlight = [
+      # Removing red and green make it look better
+      # "RainbowRed"
+      "RainbowOrange"
+      "RainbowYellow"
+      # "RainbowGreen"
+      "RainbowBlue"
+      "RainbowViolet"
+    ];
+  };
+
+} // (if vscode then {} else {
+
   # Show thin lines at indents
   indent-blankline-nvim = ''
     local hooks = require("ibl.hooks")
@@ -78,18 +93,4 @@
     }
   '';
 
-} // (if vscode then {} else {
-
-  nixvim.plugins.rainbow-delimiters = {
-    enable = true;
-    settings.highlight = [
-      # Removing red and green make it look better
-      # "RainbowRed"
-      "RainbowOrange"
-      "RainbowYellow"
-      # "RainbowGreen"
-      "RainbowBlue"
-      "RainbowViolet"
-    ];
-  };
 })
