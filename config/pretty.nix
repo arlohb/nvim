@@ -60,8 +60,6 @@
     ];
   };
 
-} // (if vscode then {} else {
-
   # Show thin lines at indents
   indent-blankline-nvim = ''
     local hooks = require("ibl.hooks")
