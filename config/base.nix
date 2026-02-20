@@ -1,10 +1,12 @@
-{ pkgs, ... }:
+{ pkgs, vscode, ... }:
 {
   none = builtins.readFile ./base.lua;
 
   # Required by loads of plugins
   plenary-nvim = "";
   nvim-web-devicons = "";
+
+} // (if vscode then {} else {
 
   # A terminal that can be floating or as a side pane
   toggleterm-nvim = ''
@@ -19,6 +21,7 @@
   '';
 
   # Integrates with direnv
+  # Not required in vscode because this is really only used to download LSPs
   direnv-vim = ''
     -- This is my own variable not direnv's
     -- I want to ignore the first time (when nvim starts),
@@ -42,4 +45,4 @@
       }
     )
   '';
-}
+})
