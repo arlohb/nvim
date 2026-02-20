@@ -31,10 +31,6 @@
     require("nvim-surround").setup {}
   '';
 
-  # TODO: Remove after support was added in nvim 0.10
-  # Comment and uncomment lines easily
-  vim-commentary = "";
-
   # Detect tab width and other stuff
   # This also read editorconfig
   vim-sleuth = "";

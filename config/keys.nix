@@ -13,6 +13,9 @@ require("which-key").setup {
         },
     },
     spec = {
+        { ";", "<cmd>norm gcc<cr>", desc = "Comment new" },
+        { ";", "<cmd>norm gc<cr>", desc = "Comment new", mode = "v" },
+
         { "<leader><leader>", function()
             require("telescope.builtin").find_files({
                 find_command = {'rg', '--files', '--hidden', '-g', '!.git' }}
@@ -118,10 +121,6 @@ require("which-key").setup {
 }
 
 -- TODO: Move these into the which key config ?
-
--- TODO: Switch to 'gcc' and 'gc' as native support was added in nvim 0.10
-vim.keymap.set("n", ";", "<cmd>Commentary<cr>", { desc = "Comment" })
-vim.keymap.set("v", ";", ":'<,'>Commentary<cr>", { desc = "Comment" })
 
 vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
 vim.keymap.set("n", "J", vim.diagnostic.open_float, { desc = "Diagnostic hover" })
