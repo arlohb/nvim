@@ -83,12 +83,12 @@ require("which-key").setup {
         { "<leader>gp", "<cmd>Gitsigns preview_hunk<cr>", desc = "Preview" },
         { "<leader>gx", "<cmd>Gitsigns reset_hunk<cr>", desc = "Discard" },
 
-        { "<leader>o", group = "+open" },
-        { "<leader>op", "<cmd>NvimTreeToggle<cr>", desc = "File Tree" },
-        { "<leader>ot", "<cmd>ToggleTerm 1 direction=float<cr>", desc = "Terminal Float" },
-        { "<leader>oT", "<cmd>ToggleTerm 2 direction=vertical<cr>", desc = "Terminal Bar" },
-        { "<leader>ol", "<cmd>LspInfo<cr>", desc = "Lsp Info" },
-        { "<leader>on", "<cmd>Telescope notify<cr>", desc = "Notifications" },
+        ${ifNotVscode ''{ "<leader>o", group = "+open" },''}
+        ${ifNotVscode ''{ "<leader>op", "<cmd>NvimTreeToggle<cr>", desc = "File Tree" },''}
+        ${ifNotVscode ''{ "<leader>ot", "<cmd>ToggleTerm 1 direction=float<cr>", desc = "Terminal Float" },''}
+        ${ifNotVscode ''{ "<leader>oT", "<cmd>ToggleTerm 2 direction=vertical<cr>", desc = "Terminal Bar" },''}
+        ${ifNotVscode ''{ "<leader>ol", "<cmd>LspInfo<cr>", desc = "Lsp Info" },''}
+        ${ifNotVscode ''{ "<leader>on", "<cmd>Telescope notify<cr>", desc = "Notifications" },''}
 
         { "<leader>d", group = "+debug" },
         ${ifNotVscode ''{ "<leader>dc", require("dap").continue, desc = "Continue" },''}
