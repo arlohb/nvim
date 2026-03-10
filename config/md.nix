@@ -30,7 +30,8 @@
             return input
           end
 
-          return "**/"..input..".md"
+          matches = vim.fn.systemlist("fd '" .. input .. ".md'")
+          return matches[1]
         end,
       },
       create_dirs = false,
