@@ -69,7 +69,7 @@
     settings.sources = [
       { name = "nvim_lsp"; }
       { name = "nvim_lua"; }
-      { name = "path"; }
+      # { name = "path"; }
       { name = "vsnip"; }
       {
         name = "latex_symbols";
