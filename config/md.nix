@@ -30,7 +30,8 @@
             return input
           end
 
-          matches = vim.fn.systemlist("fd '" .. input .. ".md'")
+          -- --full-path allows me to put the '/' at the start to make the search more specific
+          matches = vim.fn.systemlist("fd --full-path /'" .. input .. ".md'")
           return matches[1]
         end,
       },
