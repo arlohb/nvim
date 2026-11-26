@@ -89,7 +89,8 @@ load (editing motions, which-key mappings).
 From a normal checkout (for example the `~/.config/nvim` clone, or
 `NVIM_APPNAME`):
 
-1. `:Lazy update` (or `:Lazy check` to preview).
+1. `:Lazy update` (or `:Lazy check` to preview). `<leader>oL` opens the
+   plugin manager, and `<leader>om` opens Mason where it's used.
 2. Try it out, then commit the `lazy-lock.json` diff.
 3. On other machines, `git pull` (or rebuild the flake). The next start
    restores plugins to the new commits. You can also run `:Lazy restore`

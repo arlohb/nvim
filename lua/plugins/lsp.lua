@@ -101,7 +101,14 @@ return {
     cond = not platform.is_nix and not platform.is_vscode,
     cmd = { "LspInstall", "LspUninstall" },
     dependencies = {
-      { "mason-org/mason.nvim", cmd = "Mason", opts = {} },
+      {
+        "mason-org/mason.nvim",
+        cmd = "Mason",
+        keys = {
+          { "<leader>om", "<cmd>Mason<cr>", desc = "LSP servers (Mason)" },
+        },
+        opts = {},
+      },
     },
     opts = {
       ensure_installed = { "lua_ls" },

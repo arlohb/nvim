@@ -22,6 +22,9 @@ map("n", "<leader>wh", "<cmd>vsplit<cr>", { desc = "Split Horizontal" })
 map("n", "<leader>wv", "<cmd>split<cr>", { desc = "Split Vertical" })
 map("n", "<leader>wd", '<cmd>w|%bdelete|edit #|normal`"<cr>', { desc = "Kill all other buffers" })
 
+-- Plugin manager
+map("n", "<leader>oL", "<cmd>Lazy<cr>", { desc = "Plugins (lazy.nvim)" })
+
 -- Diagnostics
 map("n", "J", vim.diagnostic.open_float, { desc = "Diagnostic hover" })
 
