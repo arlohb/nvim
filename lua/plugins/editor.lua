@@ -85,6 +85,32 @@ return {
   -- Detect indentation, and read editorconfig
   { "tpope/vim-sleuth", vscode = true },
 
+  -- Highlight TODO, FIXME, NOTE etc. comments
+  {
+    "folke/todo-comments.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    cmd = { "TodoTelescope" },
+    dependencies = { "nvim-lua/plenary.nvim" },
+    keys = {
+      { "<leader>st", "<cmd>TodoTelescope<cr>", desc = "TODOs" },
+      {
+        "]t",
+        function()
+          require("todo-comments").jump_next()
+        end,
+        desc = "Next TODO",
+      },
+      {
+        "[t",
+        function()
+          require("todo-comments").jump_prev()
+        end,
+        desc = "Previous TODO",
+      },
+    },
+    opts = {},
+  },
+
   -- snacks.nvim's base spec is in ui.lua
   {
     "folke/snacks.nvim",
