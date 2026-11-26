@@ -55,11 +55,13 @@ end
 
 ---@type LazySpec
 return {
-  -- The main branch only installs parsers; highlighting is Neovim's own.
-  -- Compiling parsers needs the tree-sitter CLI and a C compiler on PATH.
+  -- nvim-treesitter only installs parsers and queries; highlighting and
+  -- indentation are started below. (This is its current rewrite; guides using
+  -- `ensure_installed` or `highlight = { enable = true }` are for the frozen
+  -- `master` branch.) Compiling parsers needs the tree-sitter CLI (0.26.1+)
+  -- and a C compiler on PATH.
   {
     "nvim-treesitter/nvim-treesitter",
-    branch = "main",
     lazy = false,
     build = ":TSUpdate",
     config = function()
@@ -98,7 +100,6 @@ return {
   -- The motions are Vim's own ]m ]] etc., made to work in every language.
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
-    branch = "main",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     keys = {
       select("af", "@function.outer", "a function"),

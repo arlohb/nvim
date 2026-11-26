@@ -64,8 +64,7 @@ nvim
 Install the tools (PowerShell):
 
 ```powershell
-winget install Neovim.Neovim Git.Git BurntSushi.ripgrep.MSVC sharkdp.fd Microsoft.PowerShell LLVM.LLVM
-npm install -g tree-sitter-cli   # needs Node.js; used to compile treesitter parsers
+winget install Neovim.Neovim Git.Git BurntSushi.ripgrep.MSVC sharkdp.fd Microsoft.PowerShell LLVM.LLVM tree-sitter.tree-sitter-cli
 ```
 
 Then:
