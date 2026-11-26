@@ -27,7 +27,7 @@ return {
     },
     config = function()
       local dapui = require("dapui")
-      dapui.setup({})
+      dapui.setup()
 
       -- Open the UI while debugging
       local listeners = require("dap").listeners

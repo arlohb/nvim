@@ -117,6 +117,17 @@ return {
     },
   },
 
-  -- Completion and types for the Neovim API when editing this config
-  { "folke/lazydev.nvim", ft = "lua", opts = {} },
+  -- Completion and types for the Neovim API when editing this config.
+  -- Plugins' types load when a file `require`s them; these are also used
+  -- without a require, so load them when the words appear.
+  {
+    "folke/lazydev.nvim",
+    ft = "lua",
+    opts = {
+      library = {
+        { path = "snacks.nvim", words = { "Snacks", "snacks%." } },
+        { path = "lazy.nvim", words = { "LazySpec", "LazyPluginSpec" } },
+      },
+    },
+  },
 }
