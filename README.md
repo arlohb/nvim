@@ -95,9 +95,12 @@ From a normal checkout (for example the `~/.config/nvim` clone, or
    restores plugins to the new commits. You can also run `:Lazy restore`
    manually.
 
-Under the Nix wrapper the config is read-only, so lazy.nvim writes its
-lockfile to the state directory. Updates made there aren't saved to the
-repo; run updates from a checkout instead.
+lazy.nvim itself works on a copy of the lockfile in Neovim's state
+directory, so plugins left over from another config can't overwrite the
+repo's pins. After `:Lazy update` or `:Lazy sync` the new pins are copied
+into the repo's `lazy-lock.json`. Under the Nix wrapper the config is
+read-only, so updates there only last until the next start; run them from a
+checkout instead.
 
 ## Development
 

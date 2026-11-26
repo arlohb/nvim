@@ -1,14 +1,17 @@
 -- Keeps installed plugins at the commits in the repo's lazy-lock.json.
 --
--- lazy-lock.json is the single source of plugin versions on every platform.
--- lazy.nvim installs missing plugins at the locked commits, but two cases
--- need help:
+-- The repo's lazy-lock.json is the source of plugin versions on every
+-- platform. lazy.nvim only ever works on a private copy in the state
+-- directory, because after installing anything it rewrites its lockfile from
+-- whatever commits are on disk. Writing the repo's file directly would let
+-- leftover plugins (from another config, or not yet restored after a git
+-- pull) overwrite the pins.
 --
--- 1. When the config is read-only (the Nix store), lazy.nvim can't write
---    its lockfile, so it gets a writable copy in the state directory.
--- 2. When the repo's lockfile changes (git pull, or a new flake build),
---    already installed plugins are moved to the new commits with
---    `:Lazy restore`.
+-- - On startup, if the repo's pins differ from the ones last restored (first
+--   run, git pull, new flake build), installed plugins are moved to them with
+--   `:Lazy restore`.
+-- - After `:Lazy update` or `:Lazy sync`, the new pins are copied back to the
+--   repo (when it's writable, so not the Nix store) to be committed.
 
 local M = {}
 
@@ -53,44 +56,74 @@ local function fingerprint(path)
   return vim.fn.sha256(table.concat(lines, "\n"))
 end
 
---- Fingerprint of the lockfile the installed plugins were last synced to.
+--- Fingerprint of the repo lockfile the installed plugins were last restored to.
 M.stamp_path = vim.fn.stdpath("state") .. "/lazy-lock.sha256"
+
+--- lazy.nvim's own copy of the lockfile.
+M.lazy_lock = vim.fn.stdpath("state") .. "/lazy-lock.json"
 
 ---@param root string Directory containing lazy-lock.json
 function M.prepare(root)
   local repo_lock = root .. "/lazy-lock.json"
   M.repo_lock = repo_lock
 
-  local path = repo_lock
-  if vim.fn.filewritable(root) ~= 2 then
-    path = vim.fn.stdpath("state") .. "/lazy-lock.json"
+  --- Reset lazy.nvim's copy to the repo's pins
+  local function load_repo_pins()
     local content = read(repo_lock)
-    if content and read(path) ~= content then
-      write(path, content)
+    if content and read(M.lazy_lock) ~= content then
+      write(M.lazy_lock, content)
+    end
+    -- lazy.nvim caches the lockfile once read
+    local ok, lock = pcall(require, "lazy.manage.lock")
+    if ok then
+      lock._loaded = false
     end
   end
+  load_repo_pins()
 
-  -- Checked now, before lazy.nvim installs anything and updates the stamp
+  -- Checked now, before lazy.nvim installs anything
   local hash = fingerprint(repo_lock)
   local changed = hash ~= nil and read(M.stamp_path) ~= hash
 
+  local group = vim.api.nvim_create_augroup("config.lockfile", {})
   vim.api.nvim_create_autocmd("User", {
-    group = vim.api.nvim_create_augroup("config.lockfile", {}),
-    pattern = { "LazyInstall", "LazyRestore", "LazySync", "LazyUpdate" },
-    desc = "Record which lockfile the installed plugins match",
+    group = group,
+    pattern = "LazyRestore",
+    desc = "Record that the installed plugins match the repo's pins",
     callback = function()
-      -- lazy.nvim writes the lockfile after firing these events
-      vim.schedule(function()
-        local new = fingerprint(repo_lock)
-        if new then
-          write(M.stamp_path, new)
-        end
-      end)
+      local new = fingerprint(repo_lock)
+      if new then
+        write(M.stamp_path, new)
+      end
+    end,
+  })
+  vim.api.nvim_create_autocmd("User", {
+    group = group,
+    pattern = { "LazyUpdate", "LazySync" },
+    desc = "Save updated pins to the repo's lazy-lock.json",
+    callback = function()
+      if vim.fn.filewritable(repo_lock) ~= 1 then
+        -- Read-only (Nix store): keep the updates for this session only
+        os.remove(M.stamp_path)
+        vim.notify(
+          "lazy-lock.json is read-only, so these updates are temporary: plugins go back to its pins on the next start",
+          vim.log.levels.WARN
+        )
+        return
+      end
+      -- lazy.nvim saves its lockfile just after this event; do it now so the
+      -- pins are copied even if Neovim exits straight away (`+Lazy! update`)
+      require("lazy.manage.lock").update()
+      local content = read(M.lazy_lock)
+      if content then
+        write(repo_lock, content)
+        write(M.stamp_path, assert(fingerprint(repo_lock)))
+      end
     end,
   })
 
   return {
-    path = path,
+    path = M.lazy_lock,
     restore_if_changed = function()
       if not changed then
         return
@@ -100,8 +133,9 @@ function M.prepare(root)
         once = true,
         callback = function()
           vim.notify("lazy-lock.json changed, restoring plugins")
-          -- The LazyRestore autocmd above records the new fingerprint, even
-          -- if some plugins fail (e.g. offline); errors show in :Lazy
+          -- Installing missing plugins at startup may have changed lazy.nvim's
+          -- copy, so start again from the repo's pins
+          load_repo_pins()
           require("lazy").restore({ show = false })
         end,
       })
