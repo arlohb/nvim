@@ -49,7 +49,12 @@ function M.check()
   check_tool("tree-sitter CLI", { "tree-sitter" }, "compiles treesitter parsers", false)
   check_tool("C compiler", { "cc", "gcc", "clang", "cl", "zig" }, "compiles treesitter parsers", false)
   if platform.is_windows then
-    check_tool("PowerShell", { "pwsh", "powershell" }, "terminal shell", false)
+    local bash = platform.git_bash()
+    if bash then
+      vim.health.ok(("Git Bash (`%s`): terminal shell"):format(bash))
+    else
+      vim.health.warn("Git Bash not found: the terminal uses PowerShell instead", "Install Git for Windows")
+    end
   else
     check_tool("direnv", { "direnv" }, "loads project environments (LSP servers)", false)
   end

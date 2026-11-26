@@ -74,7 +74,8 @@ git clone https://github.com/arlohb/nvim $env:LOCALAPPDATA\nvim
 nvim
 ```
 
-The terminal (`<leader>ot`) uses `pwsh`. Icons need a Nerd Font in your
+The terminal (`<leader>ot`) uses Git Bash from Git for Windows (falling back
+to PowerShell). Icons need a Nerd Font in your
 terminal. Inline images (snacks.nvim) need a terminal with the kitty graphics
 protocol, such as WezTerm.
 

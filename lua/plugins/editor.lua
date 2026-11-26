@@ -1,12 +1,31 @@
 local platform = require("config.platform")
 
+--- The terminal's shell on Windows: Git Bash, or PowerShell without it.
+--- Elsewhere nil, meaning vim.o.shell.
+---@return string|string[]?
+local function terminal_shell()
+  if not platform.is_windows then
+    return nil
+  end
+  local bash = platform.git_bash()
+  if bash then
+    return { bash, "-i", "-l" }
+  end
+  return platform.has("pwsh") and "pwsh" or "powershell"
+end
+
 --- Toggle a terminal. `count` tells terminals apart, so the float and the
 --- side pane are separate shells.
 ---@param count integer
 ---@param position "float"|"right"
 local function terminal(count, position)
   return function()
-    Snacks.terminal.toggle(nil, { count = count, win = { position = position } })
+    Snacks.terminal.toggle(nil, {
+      count = count,
+      win = { position = position },
+      -- Stops Git Bash's login profile changing to the home directory
+      env = platform.is_windows and { CHERE_INVOKING = "1" } or nil,
+    })
   end
 end
 
@@ -136,7 +155,7 @@ return {
       },
       -- A terminal that can be floating or a side pane
       terminal = {
-        shell = platform.is_windows and (platform.has("pwsh") and "pwsh" or "powershell") or nil,
+        shell = terminal_shell(),
         win = {
           border = "rounded",
           keys = {
