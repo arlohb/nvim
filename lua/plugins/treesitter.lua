@@ -22,6 +22,37 @@ local function start(buf, lang)
   return true
 end
 
+--- Keymap spec selecting a treesitter text object
+---@param lhs string
+---@param query string
+---@param desc string
+local function select(lhs, query, desc)
+  return {
+    lhs,
+    function()
+      require("nvim-treesitter-textobjects.select").select_textobject(query, "textobjects")
+    end,
+    mode = { "x", "o" },
+    desc = desc,
+  }
+end
+
+--- Keymap spec moving to a treesitter text object
+---@param lhs string
+---@param method "goto_next_start"|"goto_next_end"|"goto_previous_start"|"goto_previous_end"
+---@param query string
+---@param desc string
+local function move(lhs, method, query, desc)
+  return {
+    lhs,
+    function()
+      require("nvim-treesitter-textobjects.move")[method](query, "textobjects")
+    end,
+    mode = { "n", "x", "o" },
+    desc = desc,
+  }
+end
+
 ---@type LazySpec
 return {
   -- The main branch only installs parsers; highlighting is Neovim's own.
@@ -61,6 +92,36 @@ return {
         end,
       })
     end,
+  },
+
+  -- Text objects and motions for functions, classes and arguments.
+  -- The motions are Vim's own ]m ]] etc., made to work in every language.
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    branch = "main",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    keys = {
+      select("af", "@function.outer", "a function"),
+      select("if", "@function.inner", "inner function"),
+      select("ac", "@class.outer", "a class"),
+      select("ic", "@class.inner", "inner class"),
+      select("aa", "@parameter.outer", "an argument"),
+      select("ia", "@parameter.inner", "inner argument"),
+      move("]m", "goto_next_start", "@function.outer", "Next function start"),
+      move("[m", "goto_previous_start", "@function.outer", "Previous function start"),
+      move("]M", "goto_next_end", "@function.outer", "Next function end"),
+      move("[M", "goto_previous_end", "@function.outer", "Previous function end"),
+      move("]]", "goto_next_start", "@class.outer", "Next class start"),
+      move("[[", "goto_previous_start", "@class.outer", "Previous class start"),
+      move("][", "goto_next_end", "@class.outer", "Next class end"),
+      move("[]", "goto_previous_end", "@class.outer", "Previous class end"),
+    },
+    opts = {
+      -- Jump forward to the next text object if the cursor isn't in one
+      select = { lookahead = true },
+      -- Add moves to the jumplist, so <C-o> goes back
+      move = { set_jumps = true },
+    },
   },
 
   -- Colour matching brackets
