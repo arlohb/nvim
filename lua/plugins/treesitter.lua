@@ -124,6 +124,35 @@ return {
     },
   },
 
+  -- Keep the enclosing function/class header pinned at the top of the window
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    event = { "BufReadPost", "BufNewFile" },
+    keys = {
+      {
+        "<leader>oc",
+        function()
+          local context = require("treesitter-context")
+          context.toggle()
+          vim.notify("Context " .. (context.enabled() and "on" or "off"))
+        end,
+        desc = "Toggle Context",
+      },
+      {
+        "[x",
+        function()
+          require("treesitter-context").go_to_context(vim.v.count1)
+        end,
+        desc = "Go to context",
+      },
+    },
+    opts = {
+      -- Don't let the pinned lines take over the window
+      max_lines = 5,
+      multiline_threshold = 1,
+    },
+  },
+
   -- Colour matching brackets
   {
     url = "https://gitlab.com/HiPhish/rainbow-delimiters.nvim",
