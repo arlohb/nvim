@@ -94,8 +94,20 @@ return {
     },
     ---@type snacks.Config
     opts = {
-      -- Smooth scrolling
-      scroll = { enabled = true },
+      -- Smooth scrolling, slower than snacks' default (200ms, linear)
+      scroll = {
+        enabled = true,
+        animate = {
+          duration = { step = 10, total = 600 },
+          easing = "outQuad",
+        },
+        -- Used when scrolling again within `delay` ms, e.g. holding <C-d>
+        animate_repeat = {
+          delay = 100,
+          duration = { step = 5, total = 100 },
+          easing = "outQuad",
+        },
+      },
       -- A terminal that can be floating or a side pane
       terminal = {
         shell = platform.is_windows and (platform.has("pwsh") and "pwsh" or "powershell") or nil,
