@@ -10,9 +10,13 @@ local parsers = {
   "toml", "tsx", "typescript", "vim", "vimdoc", "yaml", "zig",
 }
 
---- Start treesitter highlighting and indentation for a buffer.
+--- Start treesitter highlighting and indentation for a buffer. In VS Code,
+--- which does its own, just check the parser loads (text objects need it).
 ---@return boolean started false if there's no parser for the buffer
 local function start(buf, lang)
+  if platform.is_vscode then
+    return vim.treesitter.language.add(lang) == true
+  end
   if not pcall(vim.treesitter.start, buf, lang) then
     return false
   end
@@ -62,6 +66,7 @@ return {
   -- and a C compiler on PATH.
   {
     "nvim-treesitter/nvim-treesitter",
+    vscode = true,
     lazy = false,
     build = ":TSUpdate",
     config = function()
@@ -98,8 +103,10 @@ return {
 
   -- Text objects and motions for functions, classes and arguments.
   -- The motions are Vim's own ]m ]] etc., made to work in every language.
+  -- Also used in VS Code.
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
+    vscode = true,
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     keys = {
       select("af", "@function.outer", "a function"),
