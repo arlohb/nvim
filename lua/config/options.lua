@@ -35,6 +35,9 @@ opt.tabstop = 4
 opt.splitright = true
 opt.splitbelow = true
 
+-- Keep undo history after closing a file (in stdpath("state")/undo)
+opt.undofile = true
+
 -- Make which-key show up faster
 opt.timeoutlen = 200
 

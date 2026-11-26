@@ -8,3 +8,11 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.spell = false
   end,
 })
+
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = group,
+  desc = "Briefly highlight yanked text",
+  callback = function()
+    vim.hl.on_yank()
+  end,
+})
