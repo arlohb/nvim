@@ -42,7 +42,6 @@ opt.undofile = true
 opt.timeoutlen = 200
 
 -- Spell checking
--- TODO: https://www.reddit.com/r/neovim/comments/nbbl5w/comment/gxz560o
 opt.spell = true
 opt.spelllang = "en_gb"
 opt.spellfile = vim.fn.stdpath("config") .. "/spell/en.utf-8.add"
