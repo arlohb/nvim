@@ -1,4 +1,0 @@
-{ pkgs, ... }:
-{
-  zls.enable = true;
-}

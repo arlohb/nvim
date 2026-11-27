@@ -1,4 +1,0 @@
-{ pkgs, ... }:
-{
-  gopls.enable = true;
-}

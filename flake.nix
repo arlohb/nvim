@@ -1,95 +1,92 @@
 {
-  description = "A nixvim configuration";
+  description = "A cross-platform Neovim config (plain Lua + lazy.nvim), wrapped for Nix";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixvim.url = "github:nix-community/nixvim";
-    nixvim.inputs.nixpkgs.follows = "nixpkgs";
     flake-parts.url = "github:hercules-ci/flake-parts";
-
-    lecture-notes-nvim.url = "github:arlohb/lecture-notes.nvim";
-    # lecture-notes-nvim.url = "git+file:///home/arlo/code/lecture-notes.nvim";
-
-    drop-nvim.url = "github:folke/drop.nvim";
-    drop-nvim.flake = false;
-
-    # lean-nvim has removed lean3 support,
-    # But left it available with a git tag
-    lean3-nvim.url = "github:Julian/lean.nvim?ref=lean3";
-    lean3-nvim.flake = false;
-
-    latex-nvim.url = "github:robbielyman/latex.nvim";
-    latex-nvim.flake = false;
   };
 
   outputs =
-    { nixvim, flake-parts, ... }@inputs:
+    { flake-parts, ... }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
         "x86_64-linux"
         "aarch64-linux"
-        "x86_64-darwin"
         "aarch64-darwin"
       ];
 
       perSystem =
-        { pkgs, lib, system, ... }:
+        { pkgs, lib, ... }:
         let
-          custom = {
-            lecture-notes-nvim = inputs.lecture-notes-nvim.packages."${system}".default;
-
-            drop-nvim = pkgs.vimUtils.buildVimPlugin {
-              name = "drop.nvim";
-              src = inputs.drop-nvim;
-            };
-
-            lean3-nvim = pkgs.vimUtils.buildVimPlugin {
-              name = "lean.nvim";
-              src = inputs.lean3-nvim;
-            };
-
-            latex-nvim = pkgs.vimUtils.buildVimPlugin {
-              name = "latex.nvim";
-              src = inputs.latex-nvim;
-            };
+          # Only the files Neovim reads, so editing the README or flake
+          # doesn't change the config's store path
+          config = lib.fileset.toSource {
+            root = ./.;
+            fileset = lib.fileset.unions [
+              ./init.lua
+              ./lua
+              ./after
+              ./lazy-lock.json
+            ];
           };
 
-          utils = import ./utils.nix { inherit pkgs lib custom; };
+          # Tools the config expects on PATH. Appended to PATH, so versions
+          # from a project's direnv shell take priority.
+          runtimeDeps = with pkgs; [
+            # lazy.nvim
+            git
+            # telescope, mkdnflow
+            ripgrep
+            fd
+            # nvim-treesitter (main branch) compiles parsers
+            tree-sitter
+            gcc
+            curl
+            gnutar
+            gzip
+            # lecture-notes.nvim YouTube downloads
+            yt-dlp
+            ffmpeg
+            # snacks.nvim LaTeX rendering
+            tectonic
+            ghostscript
+          ];
 
-          modulePaths = (builtins.filter
-            (pkgs.lib.strings.hasSuffix ".nix")
-            (
-              (utils.file_paths_in_dir ./config)
-              ++ (utils.file_paths_in_dir ./config/langs)
-            )
-          );
-          modules = map
-            (path: (import path) { inherit pkgs lib custom utils; vscode = false; })
-            modulePaths;
-
-          nixvimLib = nixvim.lib.${system};
-          nixvim' = nixvim.legacyPackages.${system};
-          nvim = utils.makeNixvimFromPlugins nixvim' modules;
-
-          vscode-nvim = utils.makeNixvimFromPlugins nixvim' (map
-            (path: (import path) { inherit pkgs lib custom utils; vscode = true; })
-            [
-              ./config/base.nix
-              ./config/editing.nix
-              ./config/keys.nix
-            ]);
+          nvim = pkgs.symlinkJoin {
+            name = "nvim";
+            paths = [ pkgs.neovim-unwrapped ];
+            nativeBuildInputs = [ pkgs.makeWrapper ];
+            postBuild = ''
+              wrapProgram $out/bin/nvim \
+                --add-flags "-u ${config}/init.lua" \
+                --set ARLO_NVIM_NIX 1 \
+                --suffix PATH : ${lib.makeBinPath runtimeDeps}
+            '';
+            meta.mainProgram = "nvim";
+          };
         in
         {
-          checks.default = nixvimLib.check.mkTestDerivationFromNvim {
-            inherit nvim;
-            name = "nixvim-check";
-          };
           packages.default = nvim;
-          packages.vscode-nvim = vscode-nvim;
+          # Same config; plugins marked `vscode = true` are the only ones
+          # loaded when vscode-neovim sets vim.g.vscode
+          packages.vscode-nvim = nvim;
+
+          # Plugins are fetched by lazy.nvim at runtime (the sandbox has no
+          # network), so this only checks the Lua parses and the lockfile is
+          # valid JSON
+          checks.default = pkgs.runCommand "nvim-config-check"
+            { nativeBuildInputs = [ pkgs.luajit pkgs.jq ]; }
+            ''
+              find ${config} -name '*.lua' -print0 \
+                | xargs -0 -n1 sh -c 'luajit -bl "$0" > /dev/null'
+              jq empty ${config}/lazy-lock.json
+              touch $out
+            '';
 
           devShells.default = pkgs.mkShell {
             buildInputs = with pkgs; [
               lua-language-server
+              stylua
             ];
           };
         };
